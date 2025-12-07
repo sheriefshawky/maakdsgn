@@ -18,7 +18,6 @@
             padding-bottom: 40px;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
@@ -72,7 +71,6 @@
             font-size: 14px;
         }
 
-        /* Main Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -98,7 +96,6 @@
             font-size: 14px;
         }
 
-        /* Form Sections */
         .form-section {
             background: white;
             border-radius: 15px;
@@ -156,7 +153,6 @@
             background-position: left 15px center;
         }
 
-        /* Buttons */
         .button-group {
             display: flex;
             gap: 15px;
@@ -195,7 +191,6 @@
             background: #f0f4f8;
         }
 
-        /* Service Details Section (Hidden Initially) */
         .service-details {
             display: none;
             animation: fadeIn 0.5s ease;
@@ -240,7 +235,6 @@
             padding: 12px 50px;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -264,7 +258,7 @@
             background: white;
             border-radius: 15px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             padding: 30px;
             position: relative;
             animation: slideIn 0.3s ease;
@@ -332,6 +326,7 @@
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
+            min-width: 240px;
         }
 
         .qr-code {
@@ -341,9 +336,12 @@
             padding: 10px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .qr-code img {
+        .qr-code svg {
             width: 100%;
             height: 100%;
         }
@@ -353,6 +351,7 @@
             color: #666;
             font-size: 13px;
             text-align: center;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -371,11 +370,18 @@
             .btn {
                 width: 100%;
             }
+
+            .header-title h1 {
+                font-size: 16px;
+            }
+
+            .user-info-badge {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-right">
             <button class="back-button" onclick="window.location.href='landing.html'">
@@ -387,39 +393,35 @@
                 <h1>الاستعلام عن رسوم الخدمة</h1>
             </div>
         </div>
-        <div class="user-info-badge">
+        <div class="user-info-badge" id="userBadge">
             مرحباً، محمد أحمد
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Page Title -->
         <div class="page-title">
-            <h2>الاستعلام عن رسوم خدمة ترخيص المركبة</h2>
+            <h2>الاستعلام عن رسوم خدمة ترخيص المركبة مع المالك</h2>
             <p>يرجى إدخال بيانات المعاملة والمركبة للاستعلام عن الرسوم</p>
         </div>
 
-        <!-- Transaction Details -->
         <div class="form-section">
             <h3 class="section-title">بيانات المعاملة</h3>
             <div class="form-grid">
                 <div class="form-group">
                     <label for="transactionId">رقم المعاملة</label>
-                    <input type="text" id="transactionId" class="form-control" value="67885412" readonly>
+                    <input type="text" id="transactionId" class="form-control" readonly>
                 </div>
                 <div class="form-group">
                     <label for="serviceType">نوع الخدمة</label>
                     <select id="serviceType" class="form-control">
-                        <option value="1" selected>(1) "Issue"</option>
-                        <option value="2">(2) "Renew"</option>
-                        <option value="3">(3) "Transfer"</option>
+                        <option value="1" selected>(1) Issue</option>
+                        <option value="2">(2) Renew</option>
+                        <option value="3">(3) Transfer</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- Requester Details -->
         <div class="form-section">
             <h3 class="section-title">بيانات مقدم الطلب</h3>
             <div class="form-grid">
@@ -446,7 +448,6 @@
             </div>
         </div>
 
-        <!-- Vehicle Details -->
         <div class="form-section">
             <h3 class="section-title">بيانات المركبة</h3>
             <div class="form-grid">
@@ -485,11 +486,12 @@
                         <option value="hyundai">هيونداي</option>
                         <option value="kia">كيا</option>
                         <option value="nissan">نيسان</option>
+                        <option value="chevrolet">شيفروليه</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="manufactureYear">سنة الصنع</label>
-                    <input type="number" id="manufactureYear" class="form-control" placeholder="2022">
+                    <input type="number" id="manufactureYear" class="form-control" placeholder="2022" min="1990" max="2025">
                 </div>
                 <div class="form-group">
                     <label for="trafficDepartment">إدارة المرور</label>
@@ -506,51 +508,49 @@
                         <option value="">اختر الوحدة المرورية</option>
                         <option value="unit1">وحدة مرور 1</option>
                         <option value="unit2">وحدة مرور 2</option>
+                        <option value="unit3">وحدة مرور 3</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="button-group">
                 <button class="btn btn-primary" onclick="searchFees()">بحث</button>
                 <button class="btn btn-secondary" onclick="resetForm()">إعادة تعيين</button>
             </div>
         </div>
 
-        <!-- Service Details (Hidden Initially) -->
         <div class="form-section service-details" id="serviceDetails">
             <h3 class="section-title">تفاصيل الخدمة</h3>
             <div class="details-grid">
                 <div class="detail-item">
                     <span class="detail-label">اسم المالك</span>
-                    <span class="detail-value">أحمد محمد علي حسن</span>
+                    <span class="detail-value" id="displayOwnerName">أحمد محمد علي حسن</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">الرقم القومي للمالك</span>
-                    <span class="detail-value">28402501005485</span>
+                    <span class="detail-value" id="displayOwnerNationalId">28402501005485</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">موديل المركبة</span>
-                    <span class="detail-value">كريولا</span>
+                    <span class="detail-value" id="displayVehicleModel">كريولا</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">السنة</span>
-                    <span class="detail-value">2022</span>
+                    <span class="detail-value" id="displayYear">2022</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">إجمالي الرسوم</span>
-                    <span class="detail-value">1234.56 جنيه</span>
+                    <span class="detail-value" id="displayTotalFees">1234.56 جنيه</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">صلاحية الخدمة (بالأشهر)</span>
-                    <span class="detail-value">24 شهر</span>
+                    <span class="detail-value" id="displayValidityMonths">24 شهر</span>
                 </div>
             </div>
             <button class="btn btn-primary apply-installment-btn" onclick="openInstallmentModal()">تقديم طلب تقسيط</button>
         </div>
     </div>
 
-    <!-- Apply Installment Modal -->
     <div class="modal" id="installmentModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -567,38 +567,38 @@
                     <div class="details-grid">
                         <div class="detail-item">
                             <span class="detail-label">اسم المالك</span>
-                            <span class="detail-value">أحمد محمد علي</span>
+                            <span class="detail-value" id="modalOwnerName">أحمد محمد علي</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">الرقم القومي للمالك</span>
-                            <span class="detail-value">28402501005485</span>
+                            <span class="detail-value" id="modalOwnerNationalId">28402501005485</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">موديل المركبة</span>
-                            <span class="detail-value">كريولا</span>
+                            <span class="detail-value" id="modalVehicleModel">كريولا</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">السنة</span>
-                            <span class="detail-value">2022</span>
+                            <span class="detail-value" id="modalYear">2022</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">إجمالي الرسوم</span>
-                            <span class="detail-value">1234.56 جنيه</span>
+                            <span class="detail-value" id="modalTotalFees">1234.56 جنيه</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">صلاحية الخدمة (بالأشهر)</span>
-                            <span class="detail-value">24 شهر</span>
+                            <span class="detail-value" id="modalValidityMonths">24 شهر</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="installmentRefNo">رقم التقسيط</label>
-                        <input type="text" id="installmentRefNo" class="form-control" value="232323" readonly>
+                        <input type="text" id="installmentRefNo" class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
                         <label for="installmentTotalAmount">إجمالي مبلغ التقسيط</label>
-                        <input type="number" id="installmentTotalAmount" class="form-control" value="1400">
+                        <input type="number" id="installmentTotalAmount" class="form-control" value="1400" step="0.01">
                     </div>
 
                     <div class="form-group">
@@ -608,7 +608,7 @@
 
                     <div class="form-group">
                         <label for="installmentEndDate">تاريخ انتهاء التقسيط</label>
-                        <input type="date" id="installmentEndDate" class="form-control" value="2025-12-04">
+                        <input type="date" id="installmentEndDate" class="form-control">
                     </div>
 
                     <div class="form-group">
@@ -621,7 +621,63 @@
 
                 <div class="qr-code-section">
                     <div class="qr-code">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='white'/%3E%3Crect x='10' y='10' width='30' height='30' fill='black'/%3E%3Crect x='50' y='10' width='10' height='10' fill='black'/%3E%3Crect x='70' y='10' width='10' height='10' fill='black'/%3E%3Crect x='90' y='10' width='10' height='10' fill='black'/%3E%3Crect x='110' y='10' width='10' height='10' fill='black'/%3E%3Crect x='130' y='10' width='10' height='10' fill='black'/%3E%3Crect x='160' y='10' width='30' height='30' fill='black'/%3E%3Crect x='10' y='30' width='10' height='10' fill='black'/%3E%3Crect x='30' y='30' width='10' height='10' fill='black'/%3E%3Crect x='50' y='30' width='10' height='10' fill='black'/%3E%3Crect x='90' y='30' width='10' height='10' fill='black'/%3E%3Crect x='130' y='30' width='10' height='10' fill='black'/%3E%3Crect x='160' y='30' width='10' height='10' fill='black'/%3E%3Crect x='180' y='30' width='10' height='10' fill='black'/%3E%3Crect x='10' y='50' width='10' height='10' fill='black'/%3E%3Crect x='30' y='50' width='10' height='10' fill='black'/%3E%3Crect x='70' y='50' width='30' height='10' fill='black'/%3E%3Crect x='110' y='50' width='10' height='10' fill='black'/%3E%3Crect x='160' y='50' width='10' height='10' fill='black'/%3E%3Crect x='180' y='50' width='10' height='10' fill='black'/%3E%3Crect x='50' y='70' width='10' height='10' fill='black'/%3E%3Crect x='70' y='70' width='10' height='10' fill='black'/%3E%3Crect x='90' y='70' width='10' height='10' fill='black'/%3E%3Crect x='110' y='70' width='30' height='10' fill='black'/%3E%3Crect x='10' y='90' width='10' height='10' fill='black'/%3E%3Crect x='30' y='90' width='10' height='10' fill='black'/%3E%3Crect x='50' y='90' width='10' height='10' fill='black'/%3E%3Crect x='70' y='90' width='10' height='10' fill='black'/%3E%3Crect x='110' y='90' width='10' height='10' fill='black'/%3E%3Crect x='150' y='90' width='10' height='10' fill='black'/%3E%3Crect x='170' y='90' width='10' height='10' fill='black'/%3E%3Crect x='50' y='110' width='30' height='10' fill='black'/%3E%3Crect x='110' y='110' width='10' height='10' fill='black'/%3E%3Crect x='130' y='110' width='10' height='10' fill='black'/%3E%3Crect x='150' y='110' width='10' height='10' fill='black'/%3E%3Crect x='170' y='110' width='10' height='10' fill='black'/%3E%3Crect x='10' y='130' width='10' height='10' fill='black'/%3E%3Crect x='30' y='130' width='10' height='10' fill='black'/%3E%3Crect x='90' y='130' width='10' height='10' fill='black'/%3E%3Crect x='130' y='130' width='10' height='10' fill='black'/%3E%3Crect x='170' y='130' width='10' height='10' fill='black'/%3E%3Crect x='10' y='160' width='30' height='30' fill='black'/%3E%3Crect x='50' y='160' width='10' height='10' fill='black'/%3E%3Crect x='70' y='160' width='10' height='10' fill='black'/%3E%3Crect x='90' y='160' width='10' height='10' fill='black'/%3E%3Crect x='110' y='160' width='30' height='10' fill='black'/%3E%3Crect x='160' y='160' width='30' height='30' fill='black'/%3E%3Crect x='10' y='180' width='10' height='10' fill='black'/%3E%3Crect x='30' y='180' width='10' height='10' fill='black'/%3E%3Crect x='70' y='180' width='10' height='10' fill='black'/%3E%3Crect x='110' y='180' width='10' height='10' fill='black'/%3E%3Crect x='130' y='180' width='10' height='10' fill='black'/%3E%3Crect x='160' y='180' width='10' height='10' fill='black'/%3E%3Crect x='180' y='180' width='10' height='10' fill='black'/%3E%3C/svg%3E" alt="QR Code">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="white"/>
+                            <rect x="10" y="10" width="30" height="30" fill="black"/>
+                            <rect x="50" y="10" width="10" height="10" fill="black"/>
+                            <rect x="70" y="10" width="10" height="10" fill="black"/>
+                            <rect x="90" y="10" width="10" height="10" fill="black"/>
+                            <rect x="110" y="10" width="10" height="10" fill="black"/>
+                            <rect x="130" y="10" width="10" height="10" fill="black"/>
+                            <rect x="160" y="10" width="30" height="30" fill="black"/>
+                            <rect x="10" y="30" width="10" height="10" fill="black"/>
+                            <rect x="30" y="30" width="10" height="10" fill="black"/>
+                            <rect x="50" y="30" width="10" height="10" fill="black"/>
+                            <rect x="90" y="30" width="10" height="10" fill="black"/>
+                            <rect x="130" y="30" width="10" height="10" fill="black"/>
+                            <rect x="160" y="30" width="10" height="10" fill="black"/>
+                            <rect x="180" y="30" width="10" height="10" fill="black"/>
+                            <rect x="10" y="50" width="10" height="10" fill="black"/>
+                            <rect x="30" y="50" width="10" height="10" fill="black"/>
+                            <rect x="70" y="50" width="30" height="10" fill="black"/>
+                            <rect x="110" y="50" width="10" height="10" fill="black"/>
+                            <rect x="160" y="50" width="10" height="10" fill="black"/>
+                            <rect x="180" y="50" width="10" height="10" fill="black"/>
+                            <rect x="50" y="70" width="10" height="10" fill="black"/>
+                            <rect x="70" y="70" width="10" height="10" fill="black"/>
+                            <rect x="90" y="70" width="10" height="10" fill="black"/>
+                            <rect x="110" y="70" width="30" height="10" fill="black"/>
+                            <rect x="10" y="90" width="10" height="10" fill="black"/>
+                            <rect x="30" y="90" width="10" height="10" fill="black"/>
+                            <rect x="50" y="90" width="10" height="10" fill="black"/>
+                            <rect x="70" y="90" width="10" height="10" fill="black"/>
+                            <rect x="110" y="90" width="10" height="10" fill="black"/>
+                            <rect x="150" y="90" width="10" height="10" fill="black"/>
+                            <rect x="170" y="90" width="10" height="10" fill="black"/>
+                            <rect x="50" y="110" width="30" height="10" fill="black"/>
+                            <rect x="110" y="110" width="10" height="10" fill="black"/>
+                            <rect x="130" y="110" width="10" height="10" fill="black"/>
+                            <rect x="150" y="110" width="10" height="10" fill="black"/>
+                            <rect x="170" y="110" width="10" height="10" fill="black"/>
+                            <rect x="10" y="130" width="10" height="10" fill="black"/>
+                            <rect x="30" y="130" width="10" height="10" fill="black"/>
+                            <rect x="90" y="130" width="10" height="10" fill="black"/>
+                            <rect x="130" y="130" width="10" height="10" fill="black"/>
+                            <rect x="170" y="130" width="10" height="10" fill="black"/>
+                            <rect x="10" y="160" width="30" height="30" fill="black"/>
+                            <rect x="50" y="160" width="10" height="10" fill="black"/>
+                            <rect x="70" y="160" width="10" height="10" fill="black"/>
+                            <rect x="90" y="160" width="10" height="10" fill="black"/>
+                            <rect x="110" y="160" width="30" height="10" fill="black"/>
+                            <rect x="160" y="160" width="30" height="30" fill="black"/>
+                            <rect x="10" y="180" width="10" height="10" fill="black"/>
+                            <rect x="30" y="180" width="10" height="10" fill="black"/>
+                            <rect x="70" y="180" width="10" height="10" fill="black"/>
+                            <rect x="110" y="180" width="10" height="10" fill="black"/>
+                            <rect x="130" y="180" width="10" height="10" fill="black"/>
+                            <rect x="160" y="180" width="10" height="10" fill="black"/>
+                            <rect x="180" y="180" width="10" height="10" fill="black"/>
+                        </svg>
                     </div>
                     <p class="qr-label">رمز الاستجابة السريع<br>للتقسيط الخارجي</p>
                 </div>
@@ -630,9 +686,148 @@
     </div>
 
     <script>
-        // Generate transaction ID
-        document.getElementById('transactionId').value = 'TRX' + Date.now();
+        // Generate transaction ID on page load
+        document.getElementById('transactionId').value = '124545555' ;
 
-        function searchFees() {
-            // Validate form
-            const
+        // Generate installment reference number
+        function generateInstallmentRefNo() {
+            return 'INS' + Math.floor(Math.random() * 900000 + 100000);
+        }
+
+        // Set default end date (1 year from now)
+        function setDefaultEndDate() {
+            const today = new Date();
+            today.setFullYear(today.getFullYear() + 1);
+            const dateStr = today.toISOString().split('T')[0];
+		}
+		function searchFees() {
+        const ownerNationalId = document.getElementById('ownerNationalId').value;
+        const chassis = document.getElementById('chassis').value;
+        
+        if (!ownerNationalId || !chassis) {
+            alert('يرجى إدخال الرقم القومي للمالك ورقم الشاسيه على الأقل');
+            return;
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            // Update service details with form data
+            document.getElementById('displayOwnerNationalId').textContent = ownerNationalId;
+            document.getElementById('displayYear').textContent = 
+                document.getElementById('manufactureYear').value || '2022';
+            
+            // Show service details section
+            document.getElementById('serviceDetails').classList.add('show');
+            
+            // Scroll to service details
+            document.getElementById('serviceDetails').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 500);
+    }
+
+    function resetForm() {
+        document.querySelectorAll('.form-control').forEach(input => {
+            if (!input.readOnly) {
+                input.value = '';
+                if (input.tagName === 'SELECT') {
+                    input.selectedIndex = 0;
+                }
+            }
+        });
+        document.getElementById('serviceDetails').classList.remove('show');
+    }
+
+    function openInstallmentModal() {
+        // Copy data to modal
+        document.getElementById('modalOwnerName').textContent = 
+            document.getElementById('displayOwnerName').textContent;
+        document.getElementById('modalOwnerNationalId').textContent = 
+            document.getElementById('displayOwnerNationalId').textContent;
+        document.getElementById('modalVehicleModel').textContent = 
+            document.getElementById('displayVehicleModel').textContent;
+        document.getElementById('modalYear').textContent = 
+            document.getElementById('displayYear').textContent;
+        document.getElementById('modalTotalFees').textContent = 
+            document.getElementById('displayTotalFees').textContent;
+        document.getElementById('modalValidityMonths').textContent = 
+            document.getElementById('displayValidityMonths').textContent;
+
+        // Generate installment reference number
+        document.getElementById('installmentRefNo').value = generateInstallmentRefNo();
+        
+        // Set default end date
+        setDefaultEndDate();
+
+        // Show modal
+        document.getElementById('installmentModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeInstallmentModal() {
+        document.getElementById('installmentModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+
+    function submitInstallment() {
+        const installmentData = {
+            refNo: document.getElementById('installmentRefNo').value,
+            totalAmount: document.getElementById('installmentTotalAmount').value,
+            validityMonths: document.getElementById('serviceValidityMonths').value,
+            endDate: document.getElementById('installmentEndDate').value,
+            prepaidCard: document.getElementById('prepaidCard').value
+        };
+
+        if (!installmentData.totalAmount || !installmentData.endDate) {
+            alert('يرجى إكمال جميع البيانات المطلوبة');
+            return;
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            alert('✓ تم تقديم طلب التقسيط بنجاح!\n\n' + 
+                  'رقم التقسيط: ' + installmentData.refNo + '\n' +
+                  'المبلغ الإجمالي: ' + installmentData.totalAmount + ' جنيه\n' +
+                  'تاريخ الانتهاء: ' + installmentData.endDate);
+            
+            closeInstallmentModal();
+            
+            // Ask if user wants to go to installment search
+            setTimeout(() => {
+                if (confirm('هل تريد الانتقال إلى صفحة البحث عن التقسيطات؟')) {
+                    window.location.href = 'landing.html';
+                } else {
+                    window.location.href = 'landing.html';
+                }
+            }, 500);
+        }, 800);
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeInstallmentModal();
+        }
+    });
+
+    // Click outside modal to close
+    document.getElementById('installmentModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeInstallmentModal();
+        }
+    });
+
+    // Load user data from localStorage
+    window.addEventListener('DOMContentLoaded', function() {
+        const userData = {
+            name: localStorage.getItem('userName') || 'محمد أحمد',
+            nationalId: localStorage.getItem('userNationalId') || '28402501005485'
+        };
+
+        const firstName = userData.name.split(' ')[0];
+        document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
+    });
+        </script>
+		
+		</body>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن التقسيطات - نظام التقسيط</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .user-info-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #1e3c72;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2a5298;
+            border: 2px solid #2a5298;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f4f8;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .section-title {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 13px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: #f0f4f8;
+        }
+
+        .checkbox-cell {
+            width: 40px;
+        }
+
+        .checkbox-cell input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Details Page Styles */
+        .details-page {
+            display: none;
+        }
+
+        .details-page.show {
+            display: block;
+        }
+
+        .details-header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .transaction-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .transaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #1e3c72;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .detail-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .detail-section h3 {
+            color: #1e3c72;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .payment-table-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .two-column-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .table-container {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-right">
+            <button class="back-button" onclick="goBack()">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <div class="header-title">
+                <h1 id="pageTitle">البحث عن التقسيطات</h1>
+            </div>
+        </div>
+        <div class="user-info-badge" id="userBadge">
+            مرحباً، محمد أحمد
+        </div>
+    </header>
+
+    <!-- Search Page -->
+    <div class="container" id="searchPage">
+        <div class="page-title">
+            <h2>البحث عن التقسيطات</h2>
+            <p>ابحث عن التقسيطات باستخدام الرقم القومي أو رقم التقسيط</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-grid">
+                <div class="form-group">
+                    <label for="searchOwnerNationalId">الرقم القومي للمالك</label>
+                    <input type="text" id="searchOwnerNationalId" class="form-control" placeholder="28402501005485">
+                </div>
+                <div class="form-group">
+                    <label for="searchInstallmentRefNo">رقم التقسيط</label>
+                    <input type="text" id="searchInstallmentRefNo" class="form-control" placeholder="INS123456">
+                </div>
+                <div class="form-group">
+                    <label for="searchStartDate">تاريخ بداية التقسيط</label>
+                    <input type="date" id="searchStartDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="searchTransactionId">رقم المعاملة</label>
+                    <input type="text" id="searchTransactionId" class="form-control" placeholder="12345454">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="searchInstallments()">بحث</button>
+                <button class="btn btn-secondary" onclick="resetSearch()">إعادة تعيين</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h3 class="section-title">نتائج البحث</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" onchange="selectAll(this)">
+                            </th>
+                            <th>رقم التقسيط</th>
+                            <th>تاريخ البداية</th>
+                            <th>الرقم القومي للمالك</th>
+                            <th>إجمالي المبلغ</th>
+                            <th>الوحدة المرورية</th>
+                            <th>رقم الشاسيه</th>
+                            <th>رقم اللوحة</th>
+                            <th>الموديل</th>
+                            <th>السنة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- Results will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Page -->
+    <div class="container details-page" id="detailsPage">
+        <div class="page-title">
+            <h2>تفاصيل التقسيط</h2>
+            <p>عرض تفاصيل التقسيط والدفعات</p>
+        </div>
+
+        <div class="details-header">
+            <div class="transaction-details">
+                <h3 class="section-title">بيانات المعاملة</h3>
+                <div class="transaction-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">رقم المعاملة</span>
+                        <span class="detail-value" id="detailTransactionId">67885412</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">نوع الخدمة</span>
+                        <span class="detail-value" id="detailService">(1) "Issue"</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column-layout">
+                <div class="detail-section">
+                    <h3>بيانات مقدم الطلب</h3>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">رقم هاتف مقدم الطلب</span>
+                        <span class="detail-value" id="detailRequesterPhone">01001832455</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">علاقة مقدم الطلب</span>
+                        <span class="detail-value" id="detailRequesterRelation">زوج الزوجة</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">الرقم القومي لمقدم الطلب</span>
+                        <span class="detail-value" id="detailRequesterNationalId">28402501005485</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الرقم القومي للمالك</span>
+                        <span class="detail-value" id="detailOwnerNationalId">28402501005485</span>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>بيانات المركبة</h3>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">نوع اللوحة</span>
+                        <span class="detail-value" id="detailPlateType">خاصة</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">رقم الشاسيه</span>
+                        <span class="detail-value" id="detailChassis">185102594</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">نوع الوقود</span>
+                        <span class="detail-value" id="detailFuelType">بنزين</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">رقم الموتور</span>
+                        <span class="detail-value" id="detailEngineNumber">1389381</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">الماركة</span>
+                        <span class="detail-value" id="detailMake">تويوتا</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">سنة الصنع</span>
+                        <span class="detail-value" id="detailManufactureYear">2022</span>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <span class="detail-label">إدارة المرور</span>
+                        <span class="detail-value" id="detailTrafficDepartment">إدارة مرور القاهرة</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الوحدة المرورية</span>
+                        <span class="detail-value" id="detailTrafficUnit">وحدة مرور القاهرة</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-danger" onclick="removeInstallment()">إلغاء التقسيط</button>
+                <button class="btn btn-success" onclick="completeInstallment()">إكمال التقسيط</button>
+            </div>
+        </div>
+
+        <div class="payment-table-section">
+            <h3 class="section-title">تفاصيل الدفعات</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>رقم الدفعة</th>
+                            <th>تاريخ الدفع</th>
+                            <th>عدد الأقساط المتبقية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentTableBody">
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 30px; color: #999;">
+                                لا توجد دفعات مسجلة لهذا التقسيط
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const installments = [
+            {
+                id: 1,
+                refNo: '12345',
+                startDate: '12-12-2025',
+                ownerNationalId: '28402501005485',
+                totalAmount: 1400,
+                trafficUnit: 'وحدة مرور القاهرة',
+                chassis: 'XF323222',
+                plateNo: '751 ج ب',
+                model: 'كريولا',
+                year: 2024,
+                transactionId: '67885412',
+                service: '(1) Issue',
+                requesterPhone: '01001832455',
+                requesterRelation: 'زوج الزوجة',
+                requesterNationalId: '28402501005485',
+                plateType: 'خاصة',
+                fuelType: 'بنزين',
+                engineNumber: '1389381',
+                make: 'تويوتا',
+                manufactureYear: 2022,
+                trafficDepartment: 'إدارة مرور القاهرة',
+                payments: [
+                    { refNo: 'PAY001', date: '15-01-2025', remaining: 11 },
+                    { refNo: 'PAY002', date: '15-02-2025', remaining: 10 }
+                ]
+            },
+            {
+                id: 2,
+                refNo: '12346',
+                startDate: '12-12-2025',
+                ownerNationalId: '28402501005485',
+                totalAmount: 1400,
+                trafficUnit: 'وحدة مرور القاهرة',
+                chassis: 'XF323222',
+                plateNo: '751 ج ب',
+                model: 'كريولا',
+                year: 2024,
+                transactionId: '67885413',
+                service: '(2) Renew',
+                requesterPhone: '01001832455',
+                requesterRelation: 'المالك',
+                requesterNationalId: '28402501005485',
+                plateType: 'خاصة',
+                fuelType: 'ديزل',
+                engineNumber: '1389382',
+                make: 'هيونداي',
+                manufactureYear: 2023,
+                trafficDepartment: 'إدارة مرور الجيزة',
+                payments: []
+            },
+            {
+                id: 3,
+                refNo: '12347',
+                startDate: '12-12-2025',
+                ownerNationalId: '28402501005485',
+                totalAmount: 1400,
+                trafficUnit: 'وحدة مرور القاهرة',
+                chassis: 'XF323222',
+                plateNo: '751 ج ب',
+                model: 'كريولا',
+                year: 2024,
+                transactionId: '67885414',
+                service: '(3) Transfer',
+                requesterPhone: '01001832456',
+                requesterRelation: 'الابن',
+                requesterNationalId: '28402501005486',
+                plateType: 'عمومي',
+                fuelType: 'غاز طبيعي',
+                engineNumber: '1389383',
+                make: 'كيا',
+                manufactureYear: 2021,
+                trafficDepartment: 'إدارة مرور الإسكندرية',
+                payments: [
+                    { refNo: 'PAY003', date: '15-01-2025', remaining: 11 }
+                ]
+            },
+            {
+                id: 4,
+                refNo: '12348',
+                startDate: '12-12-2025',
+                ownerNationalId: '28402501005485',
+                totalAmount: 1400,
+                trafficUnit: 'وحدة مرور القاهرة',
+                chassis: 'XF323222',
+                plateNo: '751 ج ب',
+                model: 'كريولا',
+                year: 2024,
+                transactionId: '67885415',
+                service: '(1) Issue',
+                requesterPhone: '01001832457',
+                requesterRelation: 'الأخ',
+                requesterNationalId: '28402501005487',
+                plateType: 'أجرة',
+                fuelType: 'كهرباء',
+                engineNumber: '1389384',
+                make: 'نيسان',
+                manufactureYear: 2024,
+                trafficDepartment: 'إدارة مرور القاهرة',
+                payments: []
+            }
+        ];
+
+        let currentInstallment = null;
+
+        function searchInstallments() {
+            const resultsSection = document.getElementById('resultsSection');
+            const tbody = document.getElementById('resultsTableBody');
+            
+            // Clear previous results
+            tbody.innerHTML = '';
+            
+            // Add results
+            installments.forEach(inst => {
+                const row = `
+                    <tr onclick="viewDetails(${inst.id})">
+                        <td class="checkbox-cell">
+                            <input type="checkbox" onclick="event.stopPropagation()">
+                        </td>
+                        <td>${inst.refNo}</td>
+                        <td>${inst.startDate}</td>
+                        <td>${inst.ownerNationalId}</td>
+                        <td>${inst.totalAmount}</td>
+                        <td>${inst.trafficUnit}</td>
+                        <td>${inst.chassis}</td>
+                        <td>${inst.plateNo}</td>
+                        <td>${inst.model}</td>
+                        <td>${inst.year}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            
+            resultsSection.classList.add('show');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetSearch() {
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.value = '';
+            });
+            document.getElementById('resultsSection').classList.remove('show');
+        }
+
+        function selectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('#resultsTableBody input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+        }
+
+        function viewDetails(id) {
+            currentInstallment = installments.find(inst => inst.id === id);
+            
+            if (!currentInstallment) return;
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = 'تفاصيل التقسيط';
+            
+            // Update transaction details
+            document.getElementById('detailTransactionId').textContent = currentInstallment.transactionId;
+            document.getElementById('detailService').textContent = currentInstallment.service;
+            
+            // Update requester details
+            document.getElementById('detailRequesterPhone').textContent = currentInstallment.requesterPhone;
+            document.getElementById('detailRequesterRelation').textContent = currentInstallment.requesterRelation;
+            document.getElementById('detailRequesterNationalId').textContent = currentInstallment.requesterNationalId;
+            document.getElementById('detailOwnerNationalId').textContent = currentInstallment.ownerNationalId;
+            
+            // Update vehicle details
+            document.getElementById('detailPlateType').textContent = currentInstallment.plateType;
+            document.getElementById('detailChassis').textContent = currentInstallment.chassis;
+            document.getElementById('detailFuelType').textContent = currentInstallment.fuelType;
+            document.getElementById('detailEngineNumber').textContent = currentInstallment.engineNumber;
+            document.getElementById('detailMake').textContent = currentInstallment.make;
+            document.getElementById('detailManufactureYear').textContent = currentInstallment.manufactureYear;
+            document.getElementById('detailTrafficDepartment').textContent = currentInstallment.trafficDepartment;
+            document.getElementById('detailTrafficUnit').textContent = currentInstallment.trafficUnit;
+            
+            // Update payment table
+            const paymentTbody = document.getElementById('paymentTableBody');
+            paymentTbody.innerHTML = '';
+            
+            if (currentInstallment.payments && currentInstallment.payments.length > 0) {
+                currentInstallment.payments.forEach(payment => {
+                    const row = `
+                        <tr>
+                            <td>${payment.refNo}</td>
+                            <td>${payment.date}</td>
+                            <td>${payment.remaining}</td>
+                        </tr>
+                    `;
+                    paymentTbody.innerHTML += row;
+                });
+            } else {
+                paymentTbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 30px; color: #999;">
+                            لا توجد دفعات مسجلة لهذا التقسيط
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            // Show details page, hide search page
+            document.getElementById('searchPage').style.display = 'none';
+            document.getElementById('detailsPage').classList.add('show');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            const detailsPage = document.getElementById('detailsPage');
+            if (detailsPage.classList.contains('show')) {
+                // Go back to search
+                document.getElementById('pageTitle').textContent = 'البحث عن التقسيطات';
+                detailsPage.classList.remove('show');
+                document.getElementById('searchPage').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Go back to landing
+                window.location.href = 'landing.html';
+            }
+        }
+
+        function removeInstallment() {
+            if (confirm('هل أنت متأكد من إلغاء هذا التقسيط؟\n\nرقم التقسيط: ' + currentInstallment.refNo)) {
+                alert('✓ تم إلغاء التقسيط بنجاح');
+                goBack();
+            }
+        }
+
+        function completeInstallment() {
+            if (confirm('هل أنت متأكد من إكمال هذا التقسيط؟\n\nرقم التقسيط: ' + currentInstallment.refNo)) {
+                alert('');
+	}
+</body>
