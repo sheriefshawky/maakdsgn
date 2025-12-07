@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام معاك للتقسيط - إدارة المرور</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .logo-section {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .government-logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .government-logo svg {
+            width: 70px;
+            height: 70px;
+            fill: #1e3c72;
+        }
+
+        .system-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .system-subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .department-name {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        .right-panel {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h2 {
+            color: #1e3c72;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e3c72;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2a5298;
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            direction: rtl;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232a5298' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .decorative-line {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                padding: 40px 30px;
+                min-height: 300px;
+            }
+
+            .system-title {
+                font-size: 24px;
+            }
+
+            .right-panel {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="left-panel">
+            <div class="logo-section">
+                <div class="government-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 4v8.82c0 4.45-2.91 8.63-7 9.86-4.09-1.23-7-5.41-7-9.86V8.18l6-3z"/>
+                        <path d="M12 6L6 9v6c0 3.31 2.28 6.41 5.5 7.23 3.22-.82 5.5-3.92 5.5-7.23V9l-5-3z"/>
+                    </svg>
+                </div>
+                <h1 class="system-title">نظام معاك للتقسيط</h1>
+                <div class="decorative-line"></div>
+                <p class="system-subtitle">نظام معاك لتقسيط رسوم المركبات</p>
+                <p class="department-name">إدارة المرور والترخيص</p>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="login-header">
+                <h2>تسجيل الدخول</h2>
+                <p>يرجى إدخال بياناتك للوصول إلى النظام</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">الرقم القومي</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-control" 
+                            placeholder="أدخل الرقم القومي"
+                            maxlength="14"
+                            required
+                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="أدخل كلمة المرور"
+                            required
+                        >
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9V6zM18 20H6V10h12v10z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="trafficUnit">الوحدة المرورية</label>
+                    <div class="input-wrapper">
+                        <select id="trafficUnit" name="trafficUnit" class="form-control" required>
+                            <option value="">اختر الوحدة المرورية</option>
+                            <option value="cairo_traffic">إدارة مرور القاهرة</option>
+                            <option value="giza_traffic">إدارة مرور الجيزة</option>
+                            <option value="alex_traffic">إدارة مرور الإسكندرية</option>
+                            <option value="mansoura_traffic">إدارة مرور المنصورة</option>
+                            <option value="tanta_traffic">إدارة مرور طنطا</option>
+                        </select>
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">دخول</button>
+            </form>
+
+            <div class="footer-text">
+                © 2025 إدارة المرور والترخيص - جميع الحقوق محفوظة
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const trafficUnit = document.getElementById('trafficUnit').value;
+            
+            if (username && password && trafficUnit) {
+                window.location.href = 'landing.html';
+            }
+        });
+
+        // Only allow numbers for national ID
+        document.getElementById('username').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>
