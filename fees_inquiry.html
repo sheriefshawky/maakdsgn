@@ -409,7 +409,7 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label for="transactionId">رقم المعاملة</label>
-                    <input type="text" id="transactionId" class="form-control" readonly>
+                    <input type="text" id="transactionId" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="serviceType">نوع الخدمة</label>
@@ -427,7 +427,7 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label for="requesterPhone">رقم هاتف مقدم الطلب</label>
-                    <input type="tel" id="requesterPhone" class="form-control" placeholder="01001832455">
+                    <input type="tel" id="requesterPhone" class="form-control" placeholder="01XXXXXXXXXX">
                 </div>
                 <div class="form-group">
                     <label for="requesterRelation">علاقة مقدم الطلب</label>
@@ -443,7 +443,7 @@
                 </div>
                 <div class="form-group">
                     <label for="ownerNationalId">الرقم القومي للمالك</label>
-                    <input type="text" id="ownerNationalId" class="form-control" placeholder="28402501005485">
+                    <input type="text" id="ownerNationalId" class="form-control" placeholder="2XXXXXXXXXXXXX">
                 </div>
             </div>
         </div>
@@ -462,7 +462,7 @@
                 </div>
                 <div class="form-group">
                     <label for="chassis">رقم الشاسيه</label>
-                    <input type="text" id="chassis" class="form-control" placeholder="185102594">
+                    <input type="text" id="chassis" class="form-control" placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="fuelType">نوع الوقود</label>
@@ -476,7 +476,7 @@
                 </div>
                 <div class="form-group">
                     <label for="engineNumber">رقم الموتور</label>
-                    <input type="text" id="engineNumber" class="form-control" placeholder="1389381">
+                    <input type="text" id="engineNumber" class="form-control" placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="make">الماركة</label>
@@ -491,7 +491,7 @@
                 </div>
                 <div class="form-group">
                     <label for="manufactureYear">سنة الصنع</label>
-                    <input type="number" id="manufactureYear" class="form-control" placeholder="2022" min="1990" max="2025">
+                    <input type="number" id="manufactureYear" class="form-control" placeholder="" min="1990" max="2025">
                 </div>
                 <div class="form-group">
                     <label for="trafficDepartment">إدارة المرور</label>
@@ -592,8 +592,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="installmentRefNo">رقم التقسيط</label>
-                        <input type="text" id="installmentRefNo" class="form-control" readonly>
+                        <label for="installmentRefNo">الرقم المرجعى التقسيط</label>
+                        <input type="text" id="installmentRefNo" class="form-control" >
                     </div>
 
                     <div class="form-group">
@@ -602,7 +602,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="serviceValidityMonths">صلاحية الخدمة (بالأشهر)</label>
+                        <label for="serviceValidityMonths">مدة التقسيط (بالأشهر)</label>
                         <input type="number" id="serviceValidityMonths" class="form-control" value="24">
                     </div>
 
@@ -612,8 +612,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="prepaidCard">رقم البطاقة المدفوعة مسبقاً</label>
-                        <input type="text" id="prepaidCard" class="form-control" value="**********4567" readonly>
+                        <label for="prepaidCard">رقم البطاقة المدفوعة مسبقاً( اخر اربع ارقام فقط)</label>
+                        <input type="text" id="prepaidCard" class="form-control" placeholder="**********XXXX" >
                     </div>
 
                     <button class="btn btn-primary" onclick="submitInstallment()">تقديم</button>
@@ -687,11 +687,11 @@
 
     <script>
         // Generate transaction ID on page load
-        document.getElementById('transactionId').value = '124545555' ;
+        document.getElementById('transactionId').value = '' ;
 
         // Generate installment reference number
         function generateInstallmentRefNo() {
-            return 'INS' + Math.floor(Math.random() * 900000 + 100000);
+            return '';
         }
 
         // Set default end date (1 year from now)

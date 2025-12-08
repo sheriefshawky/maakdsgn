@@ -797,6 +797,24 @@
 
         function completeInstallment() {
             if (confirm('هل أنت متأكد من إكمال هذا التقسيط؟\n\nرقم التقسيط: ' + currentInstallment.refNo)) {
-                alert('');
-	}
+                alert('✓ تم إكمال التقسيط بنجاح');
+                goBack();
+            }
+        }
+
+        // Load user data on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const userData = {
+                name: localStorage.getItem('userName') || 'محمد أحمد',
+                nationalId: localStorage.getItem('userNationalId') || '28402501005485'
+            };
+
+            const firstName = userData.name.split(' ')[0];
+            document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
+            
+            // Pre-fill owner national ID with logged-in user
+            document.getElementById('searchOwnerNationalId').value = userData.nationalId;
+        });
+    </script>
 </body>
+</html>

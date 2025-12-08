@@ -455,6 +455,12 @@
                 </svg>
                 <span>الاستعلام عن رسوم الخدمة</span>
             </a>
+			<a href="#" class="menu-item" onclick="navigateTo('user-mgmt')">
+                 <svg viewBox="0 0 24 24" fill="currentColor">
+					<path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm8 2c-1.33 0-4 .67-4 2v3h8v-3c0-1.33-2.67-2-4-2zm-8 0c-1.33 0-4 .67-4 2v3h8v-3c0-1.33-2.67-2-4-2z"/>
+				</svg>
+                <span>إدارة الموظفين</span>
+            </a>
 
             <div class="menu-section-title">الحساب</div>
 
@@ -575,6 +581,8 @@
                 window.location.href = 'fees_inquiry.html';
             } else if (page === 'installment') {
                 window.location.href = 'installment.html';
+            } else if (page === 'user-mgmt') {
+                window.location.href = 'user-mgmt.html';
             }
 			
         }
