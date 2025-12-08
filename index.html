@@ -243,11 +243,30 @@
                 padding: 40px 30px;
             }
         }
+		.top-logo {
+			position: absolute;
+			top: 20px;
+			left: 80%;
+			transform: translateX(-50%);
+			z-index: 999;
+			text-align: center;
+		}
+
+		.top-logo img {
+			width: 140px;      /* adjust size */
+			height: auto;
+			filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+		}
+
     </style>
 </head>
 <body>
+	
     <div class="login-container">
         <div class="left-panel">
+			<div class="top-logo">
+				<img src="logo_titd.png" alt="Top Logo">
+			</div>
             <div class="logo-section">
                 <div class="government-logo">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
