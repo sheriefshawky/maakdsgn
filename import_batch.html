@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استيراد ملفات الدفعات - نظام التقسيط</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .user-info-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .upload-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .upload-area {
+            border: 3px dashed #2a5298;
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background: #e9ecef;
+            border-color: #1e3c72;
+        }
+
+        .upload-area.dragover {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .upload-area h3 {
+            color: #1e3c72;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-select-file {
+            padding: 12px 40px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-select-file:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        .selected-file {
+            display: none;
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #28a745;
+        }
+
+        .selected-file.show {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: #28a745;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .file-details {
+            text-align: right;
+        }
+
+        .file-name {
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-upload:hover {
+            background: #218838;
+        }
+
+        .btn-cancel {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #c82333;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            color: #1e3c72;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #1e3c72;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2a5298;
+            border: 2px solid #2a5298;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f4f8;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 13px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: #f0f4f8;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-view-details {
+            padding: 6px 15px;
+            background: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view-details:hover {
+            background: #138496;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 30px;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .modal-header h3 {
+            color: #1e3c72;
+            font-size: 22px;
+        }
+
+        .close-modal {
+            width: 35px;
+            height: 35px;
+            background: #f0f4f8;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #e0e6ed;
+        }
+
+        .close-modal svg {
+            width: 20px;
+            height: 20px;
+            fill: #666;
+        }
+
+        .batch-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #1e3c72;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .selected-file.show {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .file-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-right">
+            <button class="back-button" onclick="window.location.href='landing.html'">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <div class="header-title">
+                <h1>استيراد ملفات الدفعات</h1>
+            </div>
+        </div>
+        <div class="user-info-badge" id="userBadge">
+            مرحباً، محمد أحمد
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h2>استيراد ملفات دفعات التقسيط</h2>
+            <p>رفع ملفات Excel تحتوي على بيانات الدفعات ومتابعة حالة المعالجة</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h3 class="section-title">رفع ملف جديد</h3>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                    </svg>
+                </div>
+                <h3>اسحب الملف هنا أو انقر للاختيار</h3>
+                <p>يُسمح فقط بملفات Excel (.xlsx, .xls)</p>
+                <button class="btn-select-file" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
+                    اختر الملف
+                </button>
+                <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls" onchange="handleFileSelect(event)">
+            </div>
+
+            <div class="selected-file" id="selectedFile">
+                <div class="file-info">
+                    <div class="file-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                        </svg>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name" id="fileName">payment_details.xlsx</div>
+                        <div class="file-size" id="fileSize">245 KB</div>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-upload" onclick="uploadFile()">رفع الملف</button>
+                    <button class="btn btn-cancel" onclick="cancelFile()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h3 class="section-title">البحث في الملفات المستوردة</h3>
+            <div class="search-grid">
+                <div class="form-group">
+                    <label for="searchBatchNo">رقم الدفعة (Batch No)</label>
+                    <input type="text" id="searchBatchNo" class="form-control" placeholder="BATCH_20251208001">
+                </div>
+                <div class="form-group">
+                    <label for="searchFromDate">من تاريخ</label>
+                    <input type="date" id="searchFromDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="searchToDate">إلى تاريخ</label>
+                    <input type="date" id="searchToDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="searchBatches()">بحث</button>
+                <button class="btn btn-secondary" onclick="resetSearch()">إعادة تعيين</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <h3 class="section-title">قائمة الملفات المستوردة</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>رقم الدفعة</th>
+                            <th>اسم الملف</th>
+                            <th>تاريخ الرفع</th>
+                            <th>عدد السجلات</th>
+                            <th>المعالج</th>
+                            <th>الناجح</th>
+                            <th>الفاشل</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batchesTableBody">
+                        <!-- Results will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تفاصيل الدفعة</h3>
+                <button class="close-modal" onclick="closeDetailsModal()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="batch-info">
+                <div class="info-item">
+                    <span class="info-label">رقم الدفعة</span>
+                    <span class="info-value" id="detailBatchNo">BATCH_20251208001</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">اسم الملف</span>
+                    <span class="info-value" id="detailFileName">payments_dec_2024.xlsx</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">تاريخ الرفع</span>
+                    <span class="info-value" id="detailUploadDate">2025-12-08 14:30</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">عدد السجلات</span>
+                    <span class="info-value" id="detailTotalRecords">150</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">المعالج</span>
+                    <span class="info-value" id="detailProcessed">145</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الناجح</span>
+                    <span class="info-value" style="color: #28a745;" id="detailSuccess">142</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الفاشل</span>
+                    <span class="info-value" style="color: #dc3545;" id="detailFailed">3</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الحالة</span>
+                    <span class="info-value" id="detailStatus">مكتمل</span>
+                </div>
+            </div>
+
+            <h3 class="section-title">تفاصيل السجلات</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>الرقم القومي</th>
+                            <th>رقم التقسيط</th>
+                            <th>رقم الدفعة</th>
+                            <th>تاريخ الدفع</th>
+                            <th>الأقساط المتبقية</th>
+                            <th>الحالة</th>
+                            <th>ملاحظات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <!-- Records will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let batches = [
+            {
+                id: 1,
+                batchNo: 'BATCH_20251208001',
+                fileName: 'payments_dec_2024.xlsx',
+                uploadDate: '2025-12-08 14:30',
+                totalRecords: 150,
+                processed: 150,
+                success: 147,
+                failed: 3,
+                status: 'completed',
+                records: [
+                    { no: 1, nationalId: '28402501005485', installmentRef: 'INS123456', paymentRef: 'PAY001', paymentDate: '2025-12-01', remaining: 11, status: 'success', notes: '-' },
+                    { no: 2, nationalId: '28512301005486', installmentRef: 'INS123457', paymentRef: 'PAY002', paymentDate: '2025-12-01', remaining: 10, status: 'success', notes: '-' },
+                    { no: 3, nationalId: '28612201005487', installmentRef: 'INS123458', paymentRef: 'PAY003', paymentDate: '2025-12-01', remaining: 9, status: 'failed', notes: 'رقم التقسيط غير موجود' }
+                ]
+            },
+            {
+                id: 2,
+                batchNo: 'BATCH_20251207002',
+                fileName: 'payments_nov_2024.xlsx',
+                uploadDate: '2025-12-07 10:15',
+                totalRecords: 200,
+                processed: 180,
+                success: 175,
+                failed: 5,
+                status: 'processing',
+                records: []
+            },
+            {
+                id: 3,
+                batchNo: 'BATCH_20251206003',
+                fileName: 'payments_oct_2024.xlsx',
+                uploadDate: '2025-12-06 09:45',
+                totalRecords: 180,
+                processed: 180,
+                success: 180,
+                failed: 0,
+                status: 'completed',
+                records: []
+            }
+        ];
+
+        let selectedFile = null;
+
+        // Drag and drop handlers
+        const uploadArea = document.getElementById('uploadArea');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+                    displaySelectedFile(file);
+                } else {
+                    alert('يُسمح فقط بملفات Excel (.xlsx, .xls)');
+                }
+            }
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                displaySelectedFile(file);
+            }
+        }
+
+        function displaySelectedFile(file) {
+            selectedFile = file;
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('selectedFile').classList.add('show');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' Bytes';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function cancelFile() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('selectedFile').classList.remove('show');
+        }
+
+        function uploadFile() {
+            if (!selectedFile) {
+                alert('يرجى اختيار ملف أولاً');
+                return;
+            }
+
+            // Simulate upload
+            const batchNo = 'BATCH_' + Date.now();
+            const newBatch = {
+                id: batches.length + 1,
+                batchNo: batchNo,
+                fileName: selectedFile.name,
+                uploadDate: new Date().toLocaleString('ar-EG'),
+                totalRecords: Math.floor(Math.random() * 200) + 50,
+                processed: 0,
+                success: 0,
+                failed: 0,
+                status: 'processing',
+                records: []
+            };
+
+            batches.unshift(newBatch);
+            
+            // Simulate processing
+            setTimeout(() => {
+                newBatch.processed = newBatch.totalRecords;
+                newBatch.success = newBatch.totalRecords - Math.floor(Math.random() * 5);
+                newBatch.failed = newBatch.totalRecords - newBatch.success;
+                newBatch.status = 'completed';
+                loadBatches();
+            }, 3000);
+
+            alert('✓ تم رفع الملف بنجاح!\n\nرقم الدفعة: ' + batchNo + '\n\nجاري معالجة البيانات...');
+            cancelFile();
+            loadBatches();
+        }
+
+        function loadBatches() {
+            const tbody = document.getElementById('batchesTableBody');
+            tbody.innerHTML = '';
+
+            batches.forEach(batch => {
+                const statusClass = batch.status === 'completed' ? 'status-completed' : 
+                                  batch.status === 'processing' ? 'status-processing' : 'status-failed';
+                const statusText = batch.status === 'completed' ? 'مكتمل' : 
+                                 batch.status === 'processing' ? 'قيد المعالجة' : 'فشل';
+
+                const row = `
+                    <tr>
+                        <td>${batch.batchNo}</td>
+                        <td>${batch.fileName}</td>
+                        <td>${batch.uploadDate}</td>
+                        <td>${batch.totalRecords}</td>
+                        <td>${batch.processed}</td>
+                        <td style="color: #28a745; font-weight: 600;">${batch.success}</td>
+                        <td style="color: #dc3545; font-weight: 600;">${batch.failed}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn-view-details" onclick="viewBatchDetails(${batch.id})">
+                                عرض التفاصيل
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function searchBatches() {
+            const batchNo = document.getElementById('searchBatchNo').value.toLowerCase();
+            const fromDate = document.getElementById('searchFromDate').value;
+            const toDate = document.getElementById('searchToDate').value;
+
+            const tbody = document.getElementById('batchesTableBody');
+            tbody.innerHTML = '';
+
+            const filteredBatches = batches.filter(batch => {
+                const matchBatchNo = !batchNo || batch.batchNo.toLowerCase().includes(batchNo);
+                
+                let matchDate = true;
+                if (fromDate || toDate) {
+                    const batchDate = new Date(batch.uploadDate);
+                    if (fromDate) matchDate = matchDate && batchDate >= new Date(fromDate);
+                    if (toDate) matchDate = matchDate && batchDate <= new Date(toDate);
+                }
+
+                return matchBatchNo && matchDate;
+            });
+
+            if (filteredBatches.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 30px; color: #999;">
+                            لا توجد نتائج مطابقة
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filteredBatches.forEach(batch => {
+                const statusClass = batch.status === 'completed' ? 'status-completed' : 
+                                  batch.status === 'processing' ? 'status-processing' : 'status-failed';
+                const statusText = batch.status === 'completed' ? 'مكتمل' : 
+                                 batch.status === 'processing' ? 'قيد المعالجة' : 'فشل';
+
+                const row = `
+                    <tr>
+                        <td>${batch.batchNo}</td>
+                        <td>${batch.fileName}</td>
+                        <td>${batch.uploadDate}</td>
+                        <td>${batch.totalRecords}</td>
+                        <td>${batch.processed}</td>
+                        <td style="color: #28a745; font-weight: 600;">${batch.success}</td>
+                        <td style="color: #dc3545; font-weight: 600;">${batch.failed}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn-view-details" onclick="viewBatchDetails(${batch.id})">
+                                عرض التفاصيل
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function resetSearch() {
+            document.getElementById('searchBatchNo').value = '';
+            document.getElementById('searchFromDate').value = '';
+            document.getElementById('searchToDate').value = '';
+            loadBatches();
+        }
+
+        function viewBatchDetails(batchId) {
+            const batch = batches.find(b => b.id === batchId);
+            if (!batch) return;
+
+            // Update batch info
+            document.getElementById('detailBatchNo').textContent = batch.batchNo;
+            document.getElementById('detailFileName').textContent = batch.fileName;
+            document.getElementById('detailUploadDate').textContent = batch.uploadDate;
+            document.getElementById('detailTotalRecords').textContent = batch.totalRecords;
+            document.getElementById('detailProcessed').textContent = batch.processed;
+            document.getElementById('detailSuccess').textContent = batch.success;
+            document.getElementById('detailFailed').textContent = batch.failed;
+            
+            const statusText = batch.status === 'completed' ? 'مكتمل' : 
+                             batch.status === 'processing' ? 'قيد المعالجة' : 'فشل';
+            document.getElementById('detailStatus').textContent = statusText;
+
+            // Load records
+            const recordsTbody = document.getElementById('recordsTableBody');
+            recordsTbody.innerHTML = '';
+
+            if (batch.records && batch.records.length > 0) {
+                batch.records.forEach(record => {
+                    const recordStatusClass = record.status === 'success' ? 'status-completed' : 'status-failed';
+                    const recordStatusText = record.status === 'success' ? 'نجح' : 'فشل';
+
+                    const row = `
+                        <tr>
+                            <td>${record.no}</td>
+                            <td>${record.nationalId}</td>
+                            <td>${record.installmentRef}</td>
+                            <td>${record.paymentRef}</td>
+                            <td>${record.paymentDate}</td>
+                            <td>${record.remaining}</td>
+                            <td><span class="status-badge ${recordStatusClass}">${recordStatusText}</span></td>
+                            <td>${record.notes}</td>
+                        </tr>
+                    `;
+                    recordsTbody.innerHTML += row;
+                });
+            } else {
+                recordsTbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 30px; color: #999;">
+                            لا توجد تفاصيل متاحة للسجلات
+                        </td>
+                    </tr>
+                `;
+            }
+
+            document.getElementById('detailsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDetailsModal();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('detailsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDetailsModal();
+            }
+        });
+
+        // Load user data
+        window.addEventListener('DOMContentLoaded', function() {
+            const userData = {
+                name: localStorage.getItem('userName') || 'محمد أحمد'
+            };
+            const firstName = userData.name.split(' ')[0];
+            document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
+
+            // Load initial batches
+            loadBatches();
+        });
+    </script>
+</body>
+</html>
