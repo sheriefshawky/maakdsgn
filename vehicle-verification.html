@@ -428,6 +428,10 @@
                     <label for="ownerNationalId">الرقم القومي للمالك</label>
                     <input type="text" id="ownerNationalId" class="form-control" placeholder="2XXXXXXXXXXXXX">
                 </div>
+				<div class="form-group">
+                    <label for="RequesterNationalId">الرقم القومي للمقدم الطلب</label>
+                    <input type="text" id="RequesterNationalId" disabled class="form-control" placeholder="2XXXXXXXXXXXXX">
+                </div>
             </div>
         </div>
 
@@ -661,8 +665,7 @@
     </div>
 
     <script>
-        // Generate transaction ID on page load
-        document.getElementById('transactionId').value = '' ;
+        
 
         // Generate installment reference number
         function generateInstallmentRefNo() {
@@ -802,6 +805,30 @@
 
         const firstName = userData.name.split(' ')[0];
         document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
+    });
+	
+		const fuelTypeSelect = document.getElementById('fuelType');
+    const engineNumberInput = document.getElementById('engineNumber');
+
+    fuelTypeSelect.addEventListener('change', () => {
+        if (fuelTypeSelect.value === 'electric') {
+            engineNumberInput.disabled = true;
+            engineNumberInput.value = ''; // optional: clear value when disabled
+        } else {
+            engineNumberInput.disabled = false;
+        }
+    });
+	
+	const requesterRelationSelect	= document.getElementById('requesterRelation');
+    const requestionNIDInput = document.getElementById('RequesterNationalId');
+
+    requesterRelationSelect.addEventListener('change', () => {
+        if (requesterRelationSelect.value === 'owner') {
+            requestionNIDInput.disabled = true;
+            requestionNIDInput.value = ''; // optional: clear value when disabled
+        } else {
+            requestionNIDInput.disabled = false;
+        }
     });
         </script>
 		

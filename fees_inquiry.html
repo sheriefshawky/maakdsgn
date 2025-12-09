@@ -445,6 +445,28 @@
                     <label for="ownerNationalId">الرقم القومي للمالك</label>
                     <input type="text" id="ownerNationalId" class="form-control" placeholder="2XXXXXXXXXXXXX">
                 </div>
+				 <div class="form-group">
+                    <label for="RequesterNationalId">الرقم القومي للمقدم الطلب</label>
+                    <input type="text" id="RequesterNationalId" disabled class="form-control" placeholder="2XXXXXXXXXXXXX">
+                </div>
+            </div>
+        </div>
+		<div class="form-section" id="newOwnerDiv" style="display:none;">
+            <h3 class="section-title">بيانات المالك الجديد</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="newOwnerPhone">رقم هاتف المالك الجديد</label>
+                    <input type="tel" id="newOwnerPhone" class="form-control" placeholder="01XXXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label for="newOwnerName">اسم المالك الجديد</label>
+                    <input type="text" id="newOwnerName" class="form-control" placeholder="">
+                </div>
+				<div class="form-group">
+                    <label for="newOwnerNationalId">الرقم القومي للمالك الجديد</label>
+                    <input type="text" id="newOwnerNationalId" class="form-control" placeholder="2XXXXXXXXXXXXX">
+                </div>
+				 
             </div>
         </div>
 
@@ -827,6 +849,42 @@
 
         const firstName = userData.name.split(' ')[0];
         document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
+    });
+	
+	
+	const fuelTypeSelect = document.getElementById('fuelType');
+    const engineNumberInput = document.getElementById('engineNumber');
+
+    fuelTypeSelect.addEventListener('change', () => {
+        if (fuelTypeSelect.value === 'electric') {
+            engineNumberInput.disabled = true;
+            engineNumberInput.value = ''; // optional: clear value when disabled
+        } else {
+            engineNumberInput.disabled = false;
+        }
+    });
+	
+	const requesterRelationSelect	= document.getElementById('requesterRelation');
+    const requestionNIDInput = document.getElementById('RequesterNationalId');
+
+    requesterRelationSelect.addEventListener('change', () => {
+        if (requesterRelationSelect.value === 'owner') {
+            requestionNIDInput.disabled = true;
+            requestionNIDInput.value = ''; // optional: clear value when disabled
+        } else {
+            requestionNIDInput.disabled = false;
+        }
+    });
+	
+	const serviceTypeSelect	= document.getElementById('serviceType');
+    const newOwnerDiv = document.getElementById('newOwnerDiv');
+
+    serviceTypeSelect.addEventListener('change', () => {
+        if (serviceTypeSelect.value === '3') {
+            newOwnerDiv.style.display = "block";
+        } else {
+            newOwnerDiv.style.display = "none";
+        }
     });
         </script>
 		
