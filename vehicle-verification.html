@@ -409,57 +409,24 @@
             <h3 class="section-title">بيانات مقدم الطلب</h3>
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="requesterPhone">رقم هاتف مقدم الطلب</label>
+                    <label for="requesterPhone">رقم هاتف المالك</label>
                     <input type="tel" id="requesterPhone" class="form-control" placeholder="01XXXXXXXXXX">
-                </div>
-                <div class="form-group">
-                    <label for="requesterRelation">علاقة مقدم الطلب</label>
-                    <select id="requesterRelation" class="form-control">
-                        <option value="">اختر العلاقة</option>
-                        <option value="owner" selected>المالك</option>
-                        <option value="spouse">الزوج/الزوجة</option>
-                        <option value="son">الابن</option>
-                        <option value="daughter">الابنة</option>
-                        <option value="brother">الأخ</option>
-                        <option value="other">أخرى</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label for="ownerNationalId">الرقم القومي للمالك</label>
                     <input type="text" id="ownerNationalId" class="form-control" placeholder="2XXXXXXXXXXXXX">
                 </div>
-				<div class="form-group">
-                    <label for="RequesterNationalId">الرقم القومي للمقدم الطلب</label>
-                    <input type="text" id="RequesterNationalId" disabled class="form-control" placeholder="2XXXXXXXXXXXXX">
-                </div>
+               
             </div>
         </div>
 
         <div class="form-section">
             <h3 class="section-title">بيانات المركبة</h3>
             <div class="form-grid">
-                <div class="form-group">
-                    <label for="plateType">نوع اللوحة</label>
-                    <select id="plateType" class="form-control">
-                        <option value="">اختر نوع اللوحة</option>
-                        <option value="private">خاصة</option>
-                        <option value="public">عمومي</option>
-                        <option value="taxi">أجرة</option>
-                    </select>
-                </div>
+               
                 <div class="form-group">
                     <label for="chassis">رقم الشاسيه</label>
                     <input type="text" id="chassis" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="fuelType">نوع الوقود</label>
-                    <select id="fuelType" class="form-control">
-                        <option value="">اختر نوع الوقود</option>
-                        <option value="petrol">بنزين</option>
-                        <option value="diesel">ديزل</option>
-                        <option value="gas">غاز طبيعي</option>
-                        <option value="electric">كهرباء</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label for="engineNumber">رقم الموتور</label>
@@ -479,24 +446,6 @@
                 <div class="form-group">
                     <label for="manufactureYear">سنة الصنع</label>
                     <input type="number" id="manufactureYear" class="form-control" placeholder="" min="1990" max="2025">
-                </div>
-                <div class="form-group">
-                    <label for="trafficDepartment">إدارة المرور</label>
-                    <select id="trafficDepartment" class="form-control">
-                        <option value="">اختر إدارة المرور</option>
-                        <option value="cairo">إدارة مرور القاهرة</option>
-                        <option value="giza">إدارة مرور الجيزة</option>
-                        <option value="alex">إدارة مرور الإسكندرية</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="trafficUnit">الوحدة المرورية</label>
-                    <select id="trafficUnit" class="form-control">
-                        <option value="">اختر الوحدة المرورية</option>
-                        <option value="unit1">وحدة مرور 1</option>
-                        <option value="unit2">وحدة مرور 2</option>
-                        <option value="unit3">وحدة مرور 3</option>
-                    </select>
                 </div>
             </div>
 
@@ -807,29 +756,8 @@
         document.getElementById('userBadge').textContent = 'مرحباً، ' + firstName;
     });
 	
-		const fuelTypeSelect = document.getElementById('fuelType');
-    const engineNumberInput = document.getElementById('engineNumber');
-
-    fuelTypeSelect.addEventListener('change', () => {
-        if (fuelTypeSelect.value === 'electric') {
-            engineNumberInput.disabled = true;
-            engineNumberInput.value = ''; // optional: clear value when disabled
-        } else {
-            engineNumberInput.disabled = false;
-        }
-    });
 	
-	const requesterRelationSelect	= document.getElementById('requesterRelation');
-    const requestionNIDInput = document.getElementById('RequesterNationalId');
-
-    requesterRelationSelect.addEventListener('change', () => {
-        if (requesterRelationSelect.value === 'owner') {
-            requestionNIDInput.disabled = true;
-            requestionNIDInput.value = ''; // optional: clear value when disabled
-        } else {
-            requestionNIDInput.disabled = false;
-        }
-    });
+	
         </script>
 		
 		</body>
